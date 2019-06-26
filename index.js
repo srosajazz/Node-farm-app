@@ -1,8 +1,8 @@
 // Blocking, synchronous way
-const fs = require("fs");
 
 //----------------------------------------------------------
 // FILES
+const fs = require("fs");
 const http = require("http");
 const url = require("url");
 //----------------------------------------------------------
@@ -32,6 +32,9 @@ const url = require("url");
 
 //----------------------------------------------------------
 // SERVER
+const data = fs.readFileSync(`${__dirname}/dev-data/data.json`, "utf-8");
+const dataObj = JSON.parse(data);
+
 const server = http.createServer((req, res) => {
   //   console.log(req);
   const pathName = req.url;
@@ -39,6 +42,10 @@ const server = http.createServer((req, res) => {
     res.end("OVERVIEW PAGE");
   } else if (pathName === "/product") {
     res.end("This is a Product page!");
+  } else if (pathName === "/api") {
+    //read the file
+    res.writeHead(200, { "Content-type": "application/json" });
+    res.end(data);
   } else {
     res.writeHead(404, {
       "Content-type": "text/html",
